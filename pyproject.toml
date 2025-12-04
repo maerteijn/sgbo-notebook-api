@@ -25,6 +25,7 @@ where = ["src"]
 dev = [
     "pytest ~= 8.4",
     "pytest-cov ~= 6.2",
+    "pytest-django ~= 4.11",
     "ruff ~= 0.12",
     "zuban >= 0.2.0"
 ]
@@ -33,9 +34,10 @@ dev = [
 requires = ["setuptools", "setuptools-scm", "wheel"]
 build-backend = "setuptools.build_meta"
 
-
 [tool.pytest.ini_options]
 testpaths = "tests/"
+DJANGO_SETTINGS_MODULE = "sgbo_notebook_api.settings.test"
+addopts = "--reuse-db"
 
 [tool.ruff]
 extend-exclude = ["docker/**"]
