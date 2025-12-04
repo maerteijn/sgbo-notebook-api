@@ -15,7 +15,9 @@ dependencies = [
     "django ~= 5.2",
     "django-environ",
     "psycopg[binary] ~= 3.2",
-    "djangorestframework ~= 3.16"
+    "djangorestframework ~= 3.16",
+    "drf-spectacular ~= 0.29",
+    "drf-spectacular-sidecar ~= 2025.12"
 ]
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -17,11 +17,15 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework.routers import DefaultRouter
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+)
+from rest_framework import routers
 
 from .views import NotebookViewSet
 
-router: DefaultRouter = DefaultRouter()
+router: routers.DefaultRouter = routers.DefaultRouter()
 router.register(
     "notebooks",
     NotebookViewSet,
@@ -30,5 +34,7 @@ router.register(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("", include(router.urls)),
 ]
