@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "sgbo_notebook_api.config.SGBONotebookConfig",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
