@@ -1,0 +1,22 @@
+{
+  "languages": {
+    "Python": {
+      "language_servers": ["ruff", "zuban"],
+      "format_on_save": "off"
+    }
+  },
+  "lsp": {
+    "ruff": {
+      "binary": {
+        "path": "docker/bin/lsp",
+        "arguments": [".venv/bin/ruff", "server"]
+      }
+    },
+    "zuban": {
+      "binary": {
+        "path": "docker/bin/lsp",
+        "arguments": [".venv/bin/zuban", "server"]
+      }
+    }
+  }
+}

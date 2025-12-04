@@ -1,0 +1,48 @@
+{
+    "build_systems":
+    [
+        {
+            "name": "Run docker shell",
+            "target": "terminus_exec",
+            "cancel": "terminus_cancel_build",
+            "focus": true,
+            "cmd": [
+                "$folder/docker/bin/shell"
+            ],
+            "working_dir": "$folder",
+        }
+    ],	
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				".pytest_cache",
+				"__pycache__"
+			],
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"rulers":
+		[
+			88
+		],
+		"lsp_code_actions_on_save": {
+			"source.organizeImports.ruff": true,
+		},
+		"LSP": {
+			"ruff": {
+				"enabled": true,
+				"command": ["docker/bin/lsp", ".venv/bin/ruff", "server"],
+				"selector": "source.python",
+			},
+			"zuban": {
+				"enabled": true,
+				"command": ["docker/bin/lsp", ".venv/bin/zuban", "server"],
+				"selector": "source.python"
+			}
+		}
+	}
+}

@@ -1,0 +1,71 @@
+[project]
+name = "sgbo-notebook-api"
+description = "SGBO Notebook API"
+requires-python = ">=3.13"
+license = {text = "MIT License"}
+readme = "README.md"
+authors = [
+    {name = "Martijn Jacobs", email = "maerteijn@gmail.com"},
+]
+classifiers = [
+    "Programming Language :: Python",
+]
+dynamic = ["version"]
+dependencies = [
+	"django ~= 5.2",
+	"django-environ",
+	"psycopg[binary] ~= 3.2"
+]
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+
+[project.optional-dependencies]
+dev = [
+    "pytest ~= 8.4",
+    "pytest-cov ~= 6.2",
+    "ruff ~= 0.12",
+    "zuban >= 0.2.0"
+]
+
+[build-system]
+requires = ["setuptools", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.pytest.ini_options]
+testpaths = "tests/"
+
+[tool.ruff]
+extend-exclude = ["docker/**"]
+lint.ignore = ["C408", "E501", "F405", "T201", "UP031"]
+lint.select = [
+    "E", # pycodestyle errors
+    "F", # pyflakes
+    "I", # isort
+    "T20", # flake8-print
+    "BLE", # flake8-blind-except
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+
+[tool.zuban]
+exclude = [".venv/*", "docker/*", "src/sgbo_notebook_api/settings/**", "src/sgbo_notebook_api/migrations/**"]
+# see https://careers.wolt.com/en/blog/tech/professional-grade-mypy-configuration
+disallow_untyped_defs = false
+disallow_any_unimported = false
+ignore_missing_imports = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+warn_unused_configs = true
+show_error_codes = true
+warn_unreachable = true
+allow_untyped_globals = true
+# Allows zuban to do symbol resolving of untyped packages
+follow_untyped_imports = true
+
+[project.scripts]
+"manage.py" =  "sgbo_notebook_api.manage:main"

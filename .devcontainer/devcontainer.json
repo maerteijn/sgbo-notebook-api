@@ -1,0 +1,9 @@
+{
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.base.schema.json",
+  "name": "${localWorkspaceFolderBasename}",
+  "dockerComposeFile": "../compose.yaml",
+  "service": "devcontainer",
+  "workspaceFolder": "${localWorkspaceFolder}",
+  "initializeCommand": "echo WORKSPACE_FOLDER=${localWorkspaceFolder} > ${localWorkspaceFolder}/.env",
+  "postStartCommand": "uv sync --extra dev"
+}

@@ -1,0 +1,49 @@
+services:
+  devcontainer:
+    container_name: sgbo-notebook-api
+    image: sgbo-notebook-api
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - .:${WORKSPACE_FOLDER}
+    ports:
+      - 8000:8000
+    working_dir: ${WORKSPACE_FOLDER}
+    restart: on-failure:3
+    environment:
+      - LSP_MODE=local
+      - SHELL=bash 
+      - UV_LINK_MODE=copy  
+    command: |
+      /bin/bash -c "
+        trap "exit" SIGTERM
+        uv sync --extra dev && sleep infinity &
+        wait
+      "
+    env_file: 
+        - ./.env
+        - ./docker/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:alpine
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql    
+    environment:
+      - POSTGRES_DB=sgbo-notebook-api
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 2s
+      timeout: 2s
+      retries: 8
+
+volumes:
+  postgres-data:

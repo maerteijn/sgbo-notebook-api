@@ -1,0 +1,15 @@
+_commit: 6564e57
+_src_path: ./copier-templates
+author_email: maerteijn@gmail.com
+author_name: Martijn Jacobs
+docker_base_image: alpine
+docker_image_name: sgbo-notebook-api
+docker_port: 8000
+github_username: maerteijn
+package_name: sgbo_notebook_api
+postgres_host: postgres
+project_name: SGBO Notebook API
+project_slug: sgbo-notebook-api
+python_specifier: '3.13'
+software_license: MIT License
+template: django-project

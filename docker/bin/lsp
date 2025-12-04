@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ "$LSP_MODE" == "local" ]
+then
+	$SHELL -c "$*";
+else
+	docker exec --interactive sgbo-notebook-api bash -c "$*";
+fi
