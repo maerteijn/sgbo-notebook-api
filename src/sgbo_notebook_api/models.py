@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from .nlp import NLPUtility
 from .schemas import ENTITIES_SCHEMA
 
 
@@ -98,3 +99,8 @@ class Notebook(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def save(self, *args, **kwargs):
+        nlp_utility = NLPUtility(text=self.body)
+        self.entities = list(nlp_utility.entities)
+        super().save(*args, **kwargs)
