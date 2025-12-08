@@ -1,14 +1,22 @@
 from rest_framework import viewsets
 
 from .models import Notebook
-from .serializers import NotebookEditSerializer, NotebookSerializer
+from .serializers import (
+    NotebookCreateSerializer,
+    NotebookListSerializer,
+    NotebookSerializer,
+)
 
 
 class NotebookViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
-        if self.action in ("update", "partial_update"):
-            return NotebookEditSerializer
-        return NotebookSerializer
+        match self.action:
+            case "create":
+                return NotebookCreateSerializer
+            case "list":
+                return NotebookListSerializer
+            case _:
+                return NotebookSerializer
 
     def get_queryset(self):
         return Notebook.objects.all()
