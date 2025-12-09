@@ -23,7 +23,7 @@ from drf_spectacular.views import (
 )
 from rest_framework import routers
 
-from .views import NotebookViewSet
+from .views import NLPDebugView, NotebookViewSet
 
 router: routers.DefaultRouter = routers.DefaultRouter()
 router.register(
@@ -36,5 +36,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path("nlp-debug", NLPDebugView.as_view(), name="nl-debug"),
     path("", include(router.urls)),
 ]

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>NLP Debug</title>
+	<style>
+		body {
+			display: flex;
+			justify-content: center;
+			min-height: 100vh;
+			margin: 0;
+			background-color: lightgrey;
+		}
+
+		.container {
+			width: 80%;
+			background-color: white;
+			padding: 20px;
+			overflow-x: scroll;
+		}
+
+		.analyzer {
+			margin-top: 20px;
+		}
+
+		.analyzer svg {
+			transform: scale(0.75);
+			transform-origin: top left;
+		}
+
+		textarea {
+			width: calc(100% - 20px);
+			padding: 8px;
+			border: 1px solid lightgrey;
+		}
+
+		input[type="submit"] {
+			margin-top: 10px;
+			padding: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<form method="POST">
+			{% csrf_token %}
+			<textarea name="text" rows="15" required>{% if text %}{{ text }}{% endif %}</textarea>
+			<input type="submit" value="Submit" />
+		</form>
+		{% if html_ent %}
+		<div class="analyzer">
+			{{ html_ent|safe }}
+		</div>
+		{% endif %}
+		{% if html_dep %}
+		<div class="analyzer">
+			{{ html_dep|safe }}
+		</div>
+		{% endif %}
+	</div>
+</body>
+
+</html>
