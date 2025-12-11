@@ -105,6 +105,8 @@ class Notebook(models.Model):
         return list({x["label"] for x in self.entities})
 
     def save(self, *args, **kwargs):
-        nlp_utility = NLPUtility(text=self.body)
-        self.entities = list(nlp_utility.entities)
+        # Generate entities when creating new notebooks
+        if self._state.adding:
+            nlp_utility = NLPUtility(text=self.body)
+            self.entities = list(nlp_utility.entities)
         super().save(*args, **kwargs)
