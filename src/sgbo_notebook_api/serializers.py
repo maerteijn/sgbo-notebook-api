@@ -8,6 +8,7 @@ class NotebookSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         source="notebook", view_name="notebook-detail"
     )
+    entity_labels = serializers.ListField(read_only=True)
 
     class Meta:
         model = Notebook

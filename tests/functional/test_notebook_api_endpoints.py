@@ -53,6 +53,7 @@ def test_notebooks_api__create(api_client):
     notebook_pk = response.data["id"]
     response = api_client.get(reverse("notebook-detail", kwargs=dict(pk=notebook_pk)))
     assert response.status_code == 200
+    assert response.data["entity_labels"] == ["SIGNAL"]
 
 
 @pytest.mark.django_db
@@ -124,6 +125,11 @@ def test_notebooks_api__patch_entities_success(api_client, notebook):
     # Make sure the given entities are stored in the database
     notebook.refresh_from_db()
     assert notebook.entities == entities
+
+    notebook_pk = response.data["id"]
+    response = api_client.get(reverse("notebook-detail", kwargs=dict(pk=notebook_pk)))
+    assert response.status_code == 200
+    assert response.data["entity_labels"] == ["TIME"]
 
 
 @pytest.mark.django_db

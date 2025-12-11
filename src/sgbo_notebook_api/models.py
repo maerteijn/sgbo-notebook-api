@@ -100,6 +100,10 @@ class Notebook(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    @property
+    def entity_labels(self) -> list:
+        return list({x["label"] for x in self.entities})
+
     def save(self, *args, **kwargs):
         nlp_utility = NLPUtility(text=self.body)
         self.entities = list(nlp_utility.entities)
