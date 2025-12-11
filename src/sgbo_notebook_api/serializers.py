@@ -16,6 +16,13 @@ class NotebookSerializer(serializers.ModelSerializer):
         extra_kwargs = {"body": {"read_only": True}}
 
 
+class NotebookExtraSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notebook
+        fields = ("extra",)
+        extra_kwargs: dict = {"extra": {"initial": {}}}
+
+
 class NotebookListSerializer(NotebookSerializer):
     class Meta(NotebookSerializer.Meta):
         fields = ("url", "created", "modified", "title", "body", "source_id")  # type: ignore[assignment]

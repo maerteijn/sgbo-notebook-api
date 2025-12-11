@@ -133,6 +133,27 @@ def test_notebooks_api__patch_entities_success(api_client, notebook):
 
 
 @pytest.mark.django_db
+def test_notebooks_api__get_extra_action(api_client, notebook):
+    response = api_client.get(
+        reverse("notebook-update-extra", kwargs=dict(pk=notebook.pk))
+    )
+    assert response.data["extra"] == notebook.extra
+
+
+@pytest.mark.django_db
+def test_notebooks_api__post_extra_action(api_client, notebook):
+    new_extra = {"this": "is", "a": "json"}
+
+    response = api_client.post(
+        reverse("notebook-update-extra", kwargs=dict(pk=notebook.pk)),
+        dict(extra=json.dumps(new_extra)),
+    )
+    assert response.status_code == 200
+    notebook.refresh_from_db()
+    assert notebook.extra == new_extra
+
+
+@pytest.mark.django_db
 def test_notebooks_api__delete(api_client, notebook):
     response = api_client.delete(
         reverse("notebook-detail", kwargs=dict(pk=notebook.pk))
