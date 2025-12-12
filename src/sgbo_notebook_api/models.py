@@ -4,6 +4,9 @@ import jsonschema
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from drf_spectacular.extensions import OpenApiSerializerFieldExtension
+from drf_spectacular.plumbing import build_basic_type
+from drf_spectacular.types import OpenApiTypes
 
 from .nlp import NLPUtility
 from .schemas import ENTITIES_SCHEMA
@@ -14,6 +17,17 @@ def validate_json_data_with_schema(value, schema=ENTITIES_SCHEMA):
         jsonschema.validate(instance=value, schema=schema)
     except (jsonschema.exceptions.SchemaError, jsonschema.ValidationError) as e:
         raise ValidationError(e.message)
+
+
+class JsonSchemaFieldExtensions(OpenApiSerializerFieldExtension):
+    target_class = "rest_framework.fields.JSONField"
+
+    def map_serializer_field(self, auto_schema, direction):
+        if self.target.validators:
+            for validator in self.target.validators:
+                if validator.func == validate_json_data_with_schema:
+                    return self.target.validators[0].keywords["schema"]
+        return build_basic_type(OpenApiTypes.OBJECT)
 
 
 class SourceId(models.TextChoices):
