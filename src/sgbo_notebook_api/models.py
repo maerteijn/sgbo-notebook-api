@@ -64,7 +64,7 @@ class Notebook(models.Model):
         null=False,
         blank=False,
     )
-    desctipion = models.TextField(
+    description = models.TextField(
         verbose_name=_("Description"),
         help_text=_("Description, which can be in any format you like"),
         null=False,
