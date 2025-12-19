@@ -35,7 +35,7 @@ class NotebookViewSet(viewsets.ModelViewSet):
 
         match request.method:
             case "GET":
-                serializer = NotebookExtraSerializer(notebook, read_only=True)  # type: ignore[var-annotated]
+                serializer = NotebookExtraSerializer(notebook, read_only=True)
             case "POST":
                 serializer = NotebookExtraSerializer(notebook, data=request.data)
                 serializer.is_valid(raise_exception=True)

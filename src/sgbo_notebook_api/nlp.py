@@ -1,9 +1,11 @@
 from collections.abc import Generator
-from typing import TypedDict
+from typing import TypedDict, cast
 
 import spacy
 
-regex_patterns = [
+SpacyPatterns = list[dict]
+
+regex_patterns: SpacyPatterns = [
     {
         "label": "PHONE_NUMBER",
         "pattern": [{"TEXT": {"REGEX": "(\\+31|0|0031)6{1}[1-9]{1}[0-9]{7}"}}],
@@ -30,7 +32,7 @@ regex_patterns = [
     },
 ]
 
-token_match_patterns = [
+token_match_patterns: SpacyPatterns = [
     # Match signals like "iemand kunnen bellen", "vrouw verdwaald" or "2 mannen waren op de vuist"
     {
         "label": "SIGNAL",
@@ -65,7 +67,7 @@ token_match_patterns = [
 ]
 
 # A poc to use dictionaries / lexicons / datasets
-exact_match_patterns = [
+exact_match_patterns: SpacyPatterns = [
     {"label": "SIGNAL", "pattern": [{"LOWER": "aanrijding"}]},
     {"label": "LOC", "pattern": [{"LOWER": "de"}, {"LOWER": "wallen"}]},
     {"label": "ORG", "pattern": [{"LOWER": "RTIC"}]},
@@ -78,13 +80,18 @@ exact_match_patterns = [
 
 def setup_nlp() -> spacy.Language:
     nlp: spacy.Language = spacy.load("nl_core_news_sm")
-    entity_ruler = nlp.add_pipe("entity_ruler", before="ner")
-    entity_ruler.add_patterns(regex_patterns)  # type: ignore[attr-defined]
+    entity_ruler = cast(
+        spacy.pipeline.EntityRuler, nlp.add_pipe("entity_ruler", before="ner")
+    )
+    entity_ruler.add_patterns(regex_patterns)
 
     config = {"spans_key": None, "annotate_ents": True, "overwrite": False}
-    span_ruler = nlp.add_pipe("span_ruler", config=config, before="ner")
-    span_ruler.add_patterns(token_match_patterns)  # type: ignore[attr-defined]
-    span_ruler.add_patterns(exact_match_patterns)  # type: ignore[attr-defined]
+    span_ruler = cast(
+        spacy.pipeline.SpanRuler,
+        nlp.add_pipe("span_ruler", config=config, before="ner"),
+    )
+    span_ruler.add_patterns(token_match_patterns)
+    span_ruler.add_patterns(exact_match_patterns)
 
     return nlp
 
@@ -100,7 +107,7 @@ class Entity(TypedDict):
 
 
 class NLPUtility:
-    ALLOWED_ENTITIES = (
+    ALLOWED_ENTITIES: tuple = (
         "GPE",
         "PERSON",
         "SUBJECT",
@@ -118,7 +125,7 @@ class NLPUtility:
         text = text.replace("\r", "")
 
         self.nlp: spacy.Language = nlp
-        self.doc: spacy.tokens.Doc = self.nlp(text)
+        self.doc: spacy.language.Doc = self.nlp(text)
 
         if self.ALLOWED_ENTITIES:
             self.doc.set_ents(
