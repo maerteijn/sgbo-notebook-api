@@ -46,7 +46,7 @@ DJANGO_SETTINGS_MODULE = "sgbo_notebook_api.settings.test"
 addopts = "--reuse-db"
 
 [tool.ruff]
-extend-exclude = ["docker/**"]
+extend-exclude = ["docker/**", "src/sgbo_notebook_api/migrations/**"]
 lint.ignore = ["C408", "E501", "F405", "T201", "UP031"]
 lint.select = [
     "E", # pycodestyle errors
